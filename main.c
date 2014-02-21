@@ -17,6 +17,8 @@ int main(int argc, char *argv[]) {
 			}
 		}
 
+		mvprintw(0, 40, "%d, %d", x, y);
+
 		drawChar('@', x, y);
 
 		mvaddch(23, 79, ' '); // move cursor off screen
@@ -72,16 +74,13 @@ int main(int argc, char *argv[]) {
 			default:
 				movex = 0;
 				movey = 0;
-				drawChar('!', x, y);
 		}
 		
 		
 		x += movex;
 		y += movey;
-
-		mvprintw(0, 40, "%d, %d", x, y);
-
 	}
+	
 	endwin();
 
 
