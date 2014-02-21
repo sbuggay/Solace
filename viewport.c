@@ -7,4 +7,5 @@ int init() {
 
 int drawChar(char c, short locX, short locY) {
 	mvaddch(locY, locX, c);
+	return 0;
 }

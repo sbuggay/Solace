@@ -21,45 +21,59 @@ int main(int argc, char *argv[]) {
 
 		mvaddch(23, 79, ' '); // move cursor off screen
 
-
 		int ch = getch();
 		int movex = 0, movey = 0;
-		if(ch == KEY_LEFT || ch == 'h')
-		{
-			movex = -1;
+
+		switch (ch) {
+			case KEY_LEFT:
+			case 'h':
+				movex = -1;
+				break;
+			
+			case KEY_RIGHT:
+			case 'l':
+				movex = 1;
+				break;
+			
+			case KEY_UP:
+			case 'k':
+				movey = -1;
+				break;
+
+			case KEY_DOWN:
+			case 'j':
+				movey = 1;
+				break;
+
+			case 'y':
+				movex = -1;
+				movey = -1;
+				break;
+
+			case 'u':
+				movex = 1;
+				movey = -1;
+				break;
+
+			case 'b':
+				movex = -1;
+				movey = 1;
+				break;
+
+			case 'n':
+				movex = 1;
+				movey = 1;
+				break;
+
+			case 'q':
+				endwin();
+				return 0;
+
+			default:
+				movex = 0;
+				movey = 0;
+				drawChar('!', x, y);
 		}
-		if(ch == KEY_RIGHT || ch == 'l')
-		{
-			movex = 1;
-		}
-		if(ch == KEY_UP || ch == 'k')
-		{
-			movey = -1;
-		}
-		if(ch == KEY_DOWN || ch == 'j')
-		{
-			movey = 1;
-		}
-		if(ch == 'y')
-		{
-			movex = -1;
-			movey = -1;
-		}	
-		if(ch == 'u')
-		{
-			movex = 1;
-			movey = -1;
-		}
-		if(ch == 'b')
-		{
-			movex = -1;
-			movey = 1;
-		}
-		if(ch == 'n')
-		{
-			movex = 1;
-			movey = 1;
-		}	
 		
 		
 		x += movex;
