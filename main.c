@@ -1,9 +1,18 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "viewport.h"
 
+
+char messages[1000][80];
+void add_message(char *in);
+
+
+
 int main(int argc, char *argv[]) {
 	init();
+
+	add_message("Welcome to Solace");
 
 	int x = 0, y = 0;
 	for(;;) {
@@ -18,6 +27,12 @@ int main(int argc, char *argv[]) {
 		}
 
 		drawChar('@', x, y);
+
+		for(i = 0; i < 4; i++) // print log
+		{
+			if(messages[i] != NULL)
+				mvprintw(23 - i, 0, "%s", messages[i]);	
+		}	
 
 		mvaddch(23, 79, ' '); // move cursor off screen
 
@@ -72,7 +87,7 @@ int main(int argc, char *argv[]) {
 			default:
 				movex = 0;
 				movey = 0;
-				drawChar('!', x, y);
+				add_message("not a command");
 		}
 		
 		
@@ -81,9 +96,21 @@ int main(int argc, char *argv[]) {
 
 		mvprintw(0, 40, "%d, %d", x, y);
 
+
+
 	}
 	endwin();
 
 
 	return 0;
+}
+
+void add_message(char *in)
+{
+	int i;
+	for(i = 998; i>= 0; i--)
+	{
+		strcpy(messages[i + 1], messages[i]);
+	}
+	strcpy(messages[0],in);
 }
