@@ -1,25 +1,84 @@
 #include <stdlib.h>
 
 #include "viewport.h"
+#include "map.h"
 
 int main(int argc, char *argv[]) {
+
+	/* Map Test */
+	LevelData level;
+
+	int i, j;
+
+	level.visited = TRUE;
+	level.timeLeft = -1;
+
+	for (i = 0; i < MAX_NUM_COLS; i++) {
+		for (j = 0; j < MAX_NUM_ROWS; j++) {
+			level.tiles[i][j].discovered = TRUE;
+			level.tiles[i][j].flags = VISIBLE;
+
+			if (rand() % 100 < 20)
+				level.tiles[i][j].type = WALL;
+			else
+				level.tiles[i][j].type = FLOOR;
+		}
+	}
+
+
 	init();
 
-	int x = 0, y = 0;
+	int char_draw_x = VIEWWIDTH / 2 + 1;
+	int char_draw_y = VIEWHEIGHT / 2 + 1;
+
+	int x = char_draw_x, y = char_draw_y;
+
 	for(;;) {
 
 		clear();
 
-		int i, j;
+		int i, j, mapi, mapj;
+
 		for (i = 0; i < VIEWWIDTH; i++) {
 			for (j = 0; j < VIEWHEIGHT; j++) {
-				drawChar('.', i, j);
+
+				mapi = x - (VIEWWIDTH / 2 + 1) + i;
+				mapj = y - (VIEWHEIGHT / 2 + 1) + j;
+
+				/* Only draw position if within map boundaries */
+				if (mapi > -1 && mapj > -1 && mapi < MAX_NUM_COLS && mapj < MAX_NUM_ROWS) {
+					char mapc;
+
+					switch (level.tiles[mapi][mapj].type) {
+						case FLOOR:
+							mapc = '.';
+							break;
+
+						case WALL:
+							mapc = '#';
+							break;
+
+						case DOOR:
+							mapc = '+';
+							break;
+
+						case OPEN_DOOR:
+							mapc = '\'';
+							break;
+
+						case NOTHING:
+						default:
+							mapc = ' ';
+					}
+
+					drawChar(mapc, i, j);
+				}
 			}
 		}
 
-		mvprintw(0, 40, "%d, %d", x, y);
+		mvprintw(0, VIEWWIDTH + 1, "%d, %d", x, y);
 
-		drawChar('@', x, y);
+		drawChar('@', char_draw_x, char_draw_y);
 
 		mvaddch(23, 79, ' '); // move cursor off screen
 
@@ -75,12 +134,15 @@ int main(int argc, char *argv[]) {
 				movex = 0;
 				movey = 0;
 		}
-		
-		
-		x += movex;
-		y += movey;
-	}
 	
+
+		/* Make sure valid move */
+		if (level.tiles[x + movex][y + movey].type == FLOOR) {
+			x += movex;
+			y += movey;
+		}
+	}
+
 	endwin();
 
 

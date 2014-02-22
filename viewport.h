@@ -2,8 +2,8 @@
 
 #define WIDTH 80
 #define HEIGHT 24
-#define VIEWWIDTH 40
-#define VIEWHEIGHT 20
+#define VIEWWIDTH 41
+#define VIEWHEIGHT 21
 
 int init();
 int setColor(short);

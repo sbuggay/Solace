@@ -1,5 +1,5 @@
 CC = gcc
-CFILES = main.c viewport.c
+CFILES = main.c viewport.c map.c
 INCLUDES = 
 CFLAGS =
 SLIBS = -lncurses
