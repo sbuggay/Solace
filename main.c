@@ -1,7 +1,14 @@
 #include <stdlib.h>
+#include <string.h>
 
 #include "viewport.h"
 #include "map.h"
+
+
+char messages[1000][80];
+void add_message(char *in);
+
+
 
 int main(int argc, char *argv[]) {
 
@@ -32,6 +39,9 @@ int main(int argc, char *argv[]) {
 	int char_draw_y = VIEWHEIGHT / 2 + 1;
 
 	int x = char_draw_x, y = char_draw_y;
+
+
+	add_message("Welcome to Solace");
 
 	for(;;) {
 
@@ -79,6 +89,12 @@ int main(int argc, char *argv[]) {
 		mvprintw(0, VIEWWIDTH + 1, "%d, %d", x, y);
 
 		drawChar('@', char_draw_x, char_draw_y);
+
+		for(i = 0; i < 4; i++) // print log
+		{
+			if(messages[i] != NULL)
+				mvprintw(VIEWHEIGHT + NUM_VISIBLE_MESSAGES - i, 0, "%s", messages[i]);	
+		}	
 
 		mvaddch(23, 79, ' '); // move cursor off screen
 
@@ -133,8 +149,8 @@ int main(int argc, char *argv[]) {
 			default:
 				movex = 0;
 				movey = 0;
+				add_message("not a command");
 		}
-	
 
 		/* Make sure valid move */
 		if (level.tiles[x + movex][y + movey].type == FLOOR) {
@@ -147,4 +163,14 @@ int main(int argc, char *argv[]) {
 
 
 	return 0;
+}
+
+void add_message(char *in)
+{
+	int i;
+	for(i = 998; i>= 0; i--)
+	{
+		strcpy(messages[i + 1], messages[i]);
+	}
+	strcpy(messages[0],in);
 }
