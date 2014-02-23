@@ -52,3 +52,10 @@ typedef struct {
 	// item *items;
 	TileData tiles[MAX_NUM_COLS][MAX_NUM_ROWS];
 } LevelData;
+
+void getFOVMask(char grid[DCOLS][DROWS], short xLoc, short yLoc, float maxRadius,
+				unsigned long forbiddenTerrain,	unsigned long forbiddenFlags, boolean cautiousOnWalls);
+
+void scanOctantFOV(char grid[DCOLS][DROWS], short xLoc, short yLoc, short octant, float maxRadius,
+				   short columnsRightFromOrigin, long startSlope, long endSlope, unsigned long forbiddenTerrain,
+				   unsigned long forbiddenFlags, boolean cautiousOnWalls);
